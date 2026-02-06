@@ -6,6 +6,8 @@ export type SessionUser = {
   email: string;
   emailVerified: boolean;
   image?: string | null;
+  role?: string | null;
+  restaurantId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

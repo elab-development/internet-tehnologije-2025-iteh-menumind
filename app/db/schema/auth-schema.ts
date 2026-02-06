@@ -1,5 +1,20 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
+import { restaurants } from "./restaurants";
+
+export const userRoleEnum = pgEnum("user_role", [
+  "SYSTEM_ADMIN",
+  "RESTAURANT_ADMIN",
+  "GUEST",
+]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -12,6 +27,8 @@ export const user = pgTable("user", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: userRoleEnum("role").default("GUEST").notNull(),
+  restaurantId: uuid("restaurant_id").references(() => restaurants.id),
 });
 
 export const session = pgTable(
