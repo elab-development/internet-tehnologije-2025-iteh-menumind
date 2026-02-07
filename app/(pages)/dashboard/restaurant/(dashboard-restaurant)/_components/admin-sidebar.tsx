@@ -24,6 +24,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { useCategories } from "@/utils/useCategories";
 import type { LucideIcon } from "lucide-react";
 
 type MenuItem = {
@@ -39,6 +40,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { logout, user } = useAuthContext();
+  const { countCategories } = useCategories();
 
   const isActive = (href: string) => {
     if (href === "/dashboard/restaurant")
@@ -73,7 +75,7 @@ export function AdminSidebar() {
       icon: FolderIcon,
       label: "Categories",
       href: "/dashboard/restaurant/categories",
-      badge: 5,
+      badge: countCategories,
       active: true,
     },
     { icon: BarChart3, label: "Analytics", href: "/", active: false },
