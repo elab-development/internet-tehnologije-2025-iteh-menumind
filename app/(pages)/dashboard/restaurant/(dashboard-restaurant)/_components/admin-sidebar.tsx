@@ -25,6 +25,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useCategories } from "@/utils/useCategories";
+import { useMenuItems } from "@/utils/useMenuItems";
 import type { LucideIcon } from "lucide-react";
 
 type MenuItem = {
@@ -41,6 +42,7 @@ export function AdminSidebar() {
   const router = useRouter();
   const { logout, user } = useAuthContext();
   const { countCategories } = useCategories();
+  const { countMenuItems } = useMenuItems();
 
   const isActive = (href: string) => {
     if (href === "/dashboard/restaurant")
@@ -68,7 +70,7 @@ export function AdminSidebar() {
       icon: UtensilsCrossed,
       label: "Menu Items",
       href: "/dashboard/restaurant/menu",
-      badge: 5,
+      badge: countMenuItems,
       active: true,
     },
     {
