@@ -2,6 +2,7 @@ import Features from "./_components/Features";
 import Hero from "./_components/Hero";
 import HowItWorks from "./_components/HowItWorks";
 import Navbar from "./_components/Navbar";
+import Pricing from "./_components/Pricing";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
       <Hero />
       <Features />
       <HowItWorks />
+      <Pricing />
     </>
   );
 }
