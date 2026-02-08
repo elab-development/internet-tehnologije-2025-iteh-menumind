@@ -9,6 +9,7 @@ import { RestaurantProvider } from "@/utils/useRestaurant";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Toaster } from "sonner";
 import { AdminSidebar } from "./(dashboard-restaurant)/_components/admin-sidebar";
 
 export default async function RestaurantDashboardLayout({
@@ -45,6 +46,7 @@ export default async function RestaurantDashboardLayout({
           <div className="flex min-h-screen bg-background">
             <AdminSidebar />
             <main className="flex-1 overflow-auto">{children}</main>
+            <Toaster />
           </div>
         </MenuItemsProvider>
       </CategoriesProvider>

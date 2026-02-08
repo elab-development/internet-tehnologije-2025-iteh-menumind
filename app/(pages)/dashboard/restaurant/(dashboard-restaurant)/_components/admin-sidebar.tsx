@@ -87,6 +87,7 @@ export function AdminSidebar() {
       icon: QrCodeIcon,
       label: "QR Codes",
       href: "/dashboard/restaurant/qr-codes",
+      badge: "New",
       active: true,
     },
   ];
