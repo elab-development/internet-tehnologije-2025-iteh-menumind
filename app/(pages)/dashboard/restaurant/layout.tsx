@@ -5,6 +5,7 @@ import { restaurants } from "@/db/schema/restaurants";
 import { auth } from "@/lib/auth";
 import { CategoriesProvider } from "@/utils/useCategories";
 import { MenuItemsProvider } from "@/utils/useMenuItems";
+import { RestaurantProvider } from "@/utils/useRestaurant";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -38,13 +39,15 @@ export default async function RestaurantDashboardLayout({
     .where(eq(menuItems.restaurantId, restaurant.id));
 
   return (
-    <CategoriesProvider initialCategories={restaurantCategories}>
-      <MenuItemsProvider initialMenuItems={menu_items}>
-        <div className="flex min-h-screen bg-background">
-          <AdminSidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
-        </div>
-      </MenuItemsProvider>
-    </CategoriesProvider>
+    <RestaurantProvider restaurant={restaurant}>
+      <CategoriesProvider initialCategories={restaurantCategories}>
+        <MenuItemsProvider initialMenuItems={menu_items}>
+          <div className="flex min-h-screen bg-background">
+            <AdminSidebar />
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
+        </MenuItemsProvider>
+      </CategoriesProvider>
+    </RestaurantProvider>
   );
 }

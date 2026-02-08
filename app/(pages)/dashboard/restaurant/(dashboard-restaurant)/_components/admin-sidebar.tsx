@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/utils/useAuth";
 
+import { useCategories } from "@/utils/useCategories";
+import { useMenuItems } from "@/utils/useMenuItems";
+import { useRestaurant } from "@/utils/useRestaurant";
+import type { LucideIcon } from "lucide-react";
 import {
   BarChart3,
   ChevronLeft,
@@ -24,10 +28,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useCategories } from "@/utils/useCategories";
-import { useMenuItems } from "@/utils/useMenuItems";
-import type { LucideIcon } from "lucide-react";
-
 type MenuItem = {
   icon: LucideIcon;
   label: string;
@@ -41,6 +41,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { logout, user } = useAuthContext();
+  const restaurant = useRestaurant();
   const { countCategories } = useCategories();
   const { countMenuItems } = useMenuItems();
 
@@ -114,7 +115,7 @@ export function AdminSidebar() {
       >
         {/* Logo */}
         <div className="flex h-20 items-center gap-3 border-b border-sidebar-border px-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
             <ForkKnifeCrossed className="h-5 w-5 text-primary-foreground" />
           </div>
           {!collapsed && (
@@ -148,7 +149,7 @@ export function AdminSidebar() {
           {!collapsed && (
             <div className="mb-2 px-2">
               <span className="text-xs font-medium tracking-wider text-muted-foreground">
-                Menu
+                {restaurant?.name || "Your Menu"}
               </span>
             </div>
           )}
@@ -179,7 +180,7 @@ export function AdminSidebar() {
                 {!collapsed && (
                   <>
                     <span className="flex-1">{item.label}</span>
-                    {item.badge && typeof item.badge === "number" && (
+                    {typeof item.badge === "number" && item.badge && (
                       <Badge variant="secondary" className="h-5 text-xs">
                         {item.badge}
                       </Badge>
@@ -234,10 +235,10 @@ export function AdminSidebar() {
             {!collapsed && (
               <>
                 <div className="flex flex-1 flex-col">
-                  <span className="text-sm font-medium">
-                    {user?.name || "Admin"}
+                  <span className="text-sm font-medium">{user?.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {restaurant?.name || "Your Menu"}
                   </span>
-                  <span className="text-xs text-muted-foreground">Menu</span>
                 </div>
 
                 <Button
