@@ -27,6 +27,35 @@ MenuMind combines **QR codes**, **real-time menu management**, and an **AI chatb
 
 ---
 
-MIT License
+## Local Development Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/elab-development/internet-tehnologije-2025-iteh-menumind.git
+cd menumind-ai
+```
+
+2. Install dependencies
+
+```bash
+pnpm install
+```
+
+3. Configure environment variables (.env)
+
+```shell
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=...
+NEXT_PUBLIC_APP_URL=...
+DATABASE_URL=...
+GEMINI_API_KEY=...
+```
+
+4. Start the development servers
+
+```bash
+pnpm dev
+```
 
 ---
