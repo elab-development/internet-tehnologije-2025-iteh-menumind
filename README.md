@@ -24,3 +24,5 @@ MenuMind combines **QR codes**, **real-time menu management**, and an **AI chatb
 - Real-time updates across the application
 - AI chatbot that answers questions based strictly on the restaurant’s menu
 - Secure, restaurant-scoped authentication
+
+---
