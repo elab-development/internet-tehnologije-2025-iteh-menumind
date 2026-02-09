@@ -41,7 +41,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { logout, user } = useAuthContext();
-  const restaurant = useRestaurant();
+  const { restaurant } = useRestaurant();
   const { countCategories } = useCategories();
   const { countMenuItems } = useMenuItems();
 
@@ -93,7 +93,12 @@ export function AdminSidebar() {
   ];
 
   const bottomMenuItems = [
-    { icon: Settings, label: "Settings", href: "/", active: false },
+    {
+      icon: Settings,
+      label: "Settings",
+      href: "/dashboard/restaurant/settings",
+      active: true,
+    },
   ];
 
   const sortedMenuItems = [
@@ -207,10 +212,10 @@ export function AdminSidebar() {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                   active
-                    ? "bg-sidebar-accent text-primary"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent",
+                    ? "bg-sidebar-accent text-white"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                   item.active
-                    ? ""
+                    ? "text-white"
                     : "opacity-50 text-white pointer-events-none",
                 )}
               >

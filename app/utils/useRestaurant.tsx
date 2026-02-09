@@ -1,19 +1,33 @@
 "use client";
 
 import { Restaurants } from "@/db/schema/restaurants";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
-const RestaurantContext = createContext<Restaurants | null>(null);
+type RestaurantContextType = {
+  restaurant: Restaurants;
+  updateRestaurant: (data: Partial<Restaurants>) => void;
+};
+
+const RestaurantContext = createContext<RestaurantContextType | null>(null);
 
 export function RestaurantProvider({
-  restaurant,
+  restaurant: initialRestaurant,
   children,
 }: {
   restaurant: Restaurants;
   children: React.ReactNode;
 }) {
+  const [restaurant, setRestaurant] = useState<Restaurants>(initialRestaurant);
+
+  function updateRestaurant(data: Partial<Restaurants>) {
+    setRestaurant((prev) => ({
+      ...prev,
+      ...data,
+    }));
+  }
+
   return (
-    <RestaurantContext.Provider value={restaurant}>
+    <RestaurantContext.Provider value={{ restaurant, updateRestaurant }}>
       {children}
     </RestaurantContext.Provider>
   );
