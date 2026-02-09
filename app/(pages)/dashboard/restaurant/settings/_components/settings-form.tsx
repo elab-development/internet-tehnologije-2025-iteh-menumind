@@ -15,14 +15,15 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useRestaurant } from "@/utils/useRestaurant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
-import { Restaurant } from "./types";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  urlSlug: z
+  slug: z
     .string()
     .min(2, "URL Slug must be at least 2 characters")
     .regex(
@@ -35,12 +36,14 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function SettingsForm({ restaurant }: { restaurant: Restaurant }) {
+export function SettingsForm() {
+  const { restaurant, updateRestaurant, isLoading } = useRestaurant();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: restaurant.name,
-      urlSlug: restaurant.slug,
+      slug: restaurant.slug,
       description: restaurant.description || "",
       themeColor: restaurant.themeColor || "#e48d3d",
     },
@@ -48,10 +51,13 @@ export function SettingsForm({ restaurant }: { restaurant: Restaurant }) {
 
   async function onSubmit(data: FormValues) {
     try {
-    } catch (error) {
-      console.error(error);
+      await updateRestaurant(data);
+      toast.success("Settings updated");
+    } catch {
+      toast.error("Failed to update settings");
     }
   }
+
   return (
     <Card>
       <CardHeader>
@@ -75,11 +81,11 @@ export function SettingsForm({ restaurant }: { restaurant: Restaurant }) {
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="urlSlug">URL Slug</FieldLabel>
+                <FieldLabel htmlFor="slug">URL Slug</FieldLabel>
                 <Input
-                  id="urlSlug"
+                  id="slug"
                   placeholder="my-awesome-restaurant"
-                  {...form.register("urlSlug")}
+                  {...form.register("slug")}
                 />
                 <FieldDescription className="text-xs">
                   Used in your guest-facing URL
@@ -114,9 +120,13 @@ export function SettingsForm({ restaurant }: { restaurant: Restaurant }) {
           </FieldSet>
           <Field orientation="horizontal" className="justify-end gap-2">
             <Button variant="outline" onClick={() => form.reset()}>
-              Cancel
+              Reset
             </Button>
-            <Button type="submit">Save Changes</Button>
+            {isLoading ? (
+              <Button disabled>Saving...</Button>
+            ) : (
+              <Button type="submit">Save Changes</Button>
+            )}
           </Field>
         </form>
       </CardContent>

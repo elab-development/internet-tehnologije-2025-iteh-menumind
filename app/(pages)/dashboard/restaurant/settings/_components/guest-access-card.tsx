@@ -8,10 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useRestaurant } from "@/utils/useRestaurant";
 import { toast } from "sonner";
 
-export function GuestAccessCard({ slug }: { slug: string }) {
-  const url = `${process.env.NEXT_PUBLIC_APP_URL}/r/${slug}`;
+export function GuestAccessCard() {
+  const { restaurant } = useRestaurant();
+  const url = `${process.env.NEXT_PUBLIC_APP_URL}/r/${restaurant.slug}`;
 
   function handleCopy(text: string) {
     navigator.clipboard

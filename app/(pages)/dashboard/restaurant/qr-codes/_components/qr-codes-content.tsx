@@ -34,7 +34,7 @@ function QRCodeCanvas({ url }: { url: string }) {
 }
 
 export function QRCodesContent() {
-  const restaurant = useRestaurant();
+  const { restaurant } = useRestaurant();
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
   const storageKey = useMemo(
