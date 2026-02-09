@@ -26,3 +26,7 @@ MenuMind combines **QR codes**, **real-time menu management**, and an **AI chatb
 - Secure, restaurant-scoped authentication
 
 ---
+
+MIT License
+
+---
