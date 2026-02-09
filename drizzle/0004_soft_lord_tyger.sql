@@ -1,0 +1,1 @@
+ALTER TABLE "menu_items" ADD COLUMN "is_popular" boolean DEFAULT false NOT NULL;

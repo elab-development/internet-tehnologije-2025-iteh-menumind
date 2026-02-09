@@ -5,15 +5,36 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1770375162094,
-      "tag": "0000_wild_killmonger",
+      "when": 1769594883436,
+      "tag": "0000_thankful_klaw",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1770466867986,
-      "tag": "0001_curvy_christian_walker",
+      "when": 1769681887809,
+      "tag": "0001_awesome_pandemic",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769953345951,
+      "tag": "0002_abandoned_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1770206853865,
+      "tag": "0003_real_malice",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770207394486,
+      "tag": "0004_soft_lord_tyger",
       "breakpoints": true
     }
   ]

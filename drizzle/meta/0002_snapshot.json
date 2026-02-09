@@ -1,6 +1,6 @@
 {
-  "id": "6e50408b-5a2f-4587-b30e-2b1ba1a14fc5",
-  "prevId": "93eb1fb3-cd17-4f2a-9c54-ad074bf54bd5",
+  "id": "37c737be-72fd-4fca-b6cf-1b2c53a63934",
+  "prevId": "6e50408b-5a2f-4587-b30e-2b1ba1a14fc5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -286,12 +286,6 @@
         "restaurant_id": {
           "name": "restaurant_id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "restaurant_name": {
-          "name": "restaurant_name",
-          "type": "text",
           "primaryKey": false,
           "notNull": false
         }

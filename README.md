@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MenuMind - AI-Powered Restaurant Experience
 
-## Getting Started
+**MenuMind** is a modern digital menu and restaurant management platform designed to replace traditional paper menus with QR-based, AI-powered experiences.  
+It enables restaurants to manage menus, categories, and items in real time, while allowing guests to interact with an intelligent chatbot that understands the restaurant’s actual menu data.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+MenuMind solves three core problems in modern restaurants:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Static menus** - paper menus are expensive to update and error-prone
+2. **Poor customer experience** - guests often have questions about ingredients, allergies, or recommendations
+3. **Disconnected systems** - menus, QR codes, and customer interaction tools rarely work together
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+MenuMind combines **QR codes**, **real-time menu management**, and an **AI chatbot** connected directly to the restaurant’s database.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Core Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Digital menus accessed via QR codes
+- Restaurant dashboard
+- Real-time updates across the application
+- AI chatbot that answers questions based strictly on the restaurant’s menu
+- Secure, restaurant-scoped authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Use Case
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Restaurant updates menu in the dashboard
+2. Changes propagate instantly to QR menus
+3. AI chatbot immediately reflects updated menu data
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## License
+
+MIT License
