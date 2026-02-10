@@ -13,7 +13,7 @@ import { restaurants } from "./restaurants";
 export const userRoleEnum = pgEnum("user_role", [
   "SYSTEM_ADMIN",
   "RESTAURANT_ADMIN",
-  "GUEST",
+  "USER",
 ]);
 
 export const user = pgTable("user", {
@@ -27,7 +27,7 @@ export const user = pgTable("user", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-  role: userRoleEnum("role").default("GUEST").notNull(),
+  role: userRoleEnum("role").default("USER").notNull(),
   restaurantId: uuid("restaurant_id").references(() => restaurants.id),
 });
 

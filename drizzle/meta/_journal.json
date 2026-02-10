@@ -43,6 +43,13 @@
       "when": 1770658129301,
       "tag": "0005_soft_clint_barton",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1770741812670,
+      "tag": "0006_normal_amazoness",
+      "breakpoints": true
     }
   ]
 }

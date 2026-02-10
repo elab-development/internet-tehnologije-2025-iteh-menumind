@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Restaurants } from "@/db/schema/restaurants";
 import { cn } from "@/lib/utils";
 import { ForkKnifeCrossed, Send } from "lucide-react";
@@ -19,10 +20,10 @@ type Message = {
 };
 
 const SUGGESTED = [
-  "What do you recommend?",
-  "Something spicy",
-  "Best vegan option",
-  "I want something light",
+  "What's popular today?",
+  "I'm vegeterian",
+  "Suggest a wine pairing",
+  "I have allergies",
 ];
 
 const ChatMessage = memo(({ message }: { message: Message }) => {
@@ -57,7 +58,7 @@ const SuggestedButtons = memo(
           key={s}
           onClick={() => onClick(s)}
           disabled={disabled}
-          className="whitespace-nowrap cursor-pointer rounded-full border-border bg-card border px-3 py-1.5 text-xs hover:bg-muted transition"
+          className="whitespace-nowrap cursor-pointer rounded-full border-border bg-card text-foreground/50 border px-3 py-2 text-sm hover:bg-muted transition"
         >
           {s}
         </button>
@@ -207,14 +208,14 @@ export default function AIChatbot({
           e.preventDefault();
           sendMessage();
         }}
-        className="sticky bottom-0 border-t bg-card border-border py-4"
+        className="sticky bottom-0 border-t bg-card border-border py-6"
       >
-        <div className="mx-auto max-w-2xl px-4 py-3 flex items-center gap-2">
-          <input
+        <div className="mx-auto bg-background max-w-2xl py-2 pr-2 pl-4 flex items-center gap-2 flex-1 border rounded-xl text-sm focus:outline-none border-border focus:ring-2 focus:ring-primary">
+          <Input
+            className="border-0 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask something like “light dinner option”"
-            className="flex-1 rounded-full border px-4 py-3 text-sm focus:outline-none border-border focus:ring-2 focus:ring-primary"
             disabled={isTyping}
           />
 
@@ -222,7 +223,7 @@ export default function AIChatbot({
             style={{ backgroundColor: restaurant.themeColor || "#e48d3d" }}
             type="submit"
             disabled={isTyping || !input.trim()}
-            className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-50"
+            className="h-10.5 w-10.5 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-50"
           >
             <Send className="h-4 w-4" />
           </Button>
