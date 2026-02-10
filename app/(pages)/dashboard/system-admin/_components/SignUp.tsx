@@ -60,7 +60,7 @@ export default function SignUp() {
     <Card className="w-full sm:max-w-md">
       <CardHeader>
         <CardTitle>Restaurant Admin</CardTitle>
-        <CardDescription>Sign up to manage your restaurant</CardDescription>
+        <CardDescription>Create a new restaurant admin account</CardDescription>
         <Separator className="mt-2" />
       </CardHeader>
 

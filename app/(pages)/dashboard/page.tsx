@@ -7,7 +7,7 @@ const Dashboard = async () => {
 
   if (!session?.user) redirect("/auth/login");
 
-  if (session.user.role === "SYSTEM_ADMIN") redirect("/dashboard/platform");
+  if (session.user.role === "SYSTEM_ADMIN") redirect("/dashboard/system-admin");
   if (session.user.role === "RESTAURANT_ADMIN")
     redirect("/dashboard/restaurant");
 
