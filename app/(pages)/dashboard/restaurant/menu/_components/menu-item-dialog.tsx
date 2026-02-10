@@ -165,7 +165,7 @@ export function MenuItemDialog({
                   alt="Preview"
                   width={400}
                   height={300}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                 />
               </div>
             )}
