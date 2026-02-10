@@ -14,7 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useAuthContext } from "@/utils/useAuth";
@@ -76,6 +82,9 @@ export default function SignUp() {
                   placeholder="Your name"
                   {...form.register("name")}
                 />
+                <FieldError className="text-destructive text-xs font-normal">
+                  {form.formState.errors.name?.message}
+                </FieldError>
               </Field>
 
               <Field>
@@ -86,6 +95,9 @@ export default function SignUp() {
                   placeholder="admin@restaurant.com"
                   {...form.register("email")}
                 />
+                <FieldError className="text-destructive text-xs font-normal">
+                  {form.formState.errors.email?.message}
+                </FieldError>
               </Field>
 
               <Field>
@@ -96,6 +108,9 @@ export default function SignUp() {
                   placeholder="••••••••"
                   {...form.register("password")}
                 />
+                <FieldError className="text-destructive text-xs font-normal">
+                  {form.formState.errors.password?.message}
+                </FieldError>
               </Field>
             </FieldGroup>
           </FieldSet>
