@@ -121,7 +121,7 @@ export function AdminSidebar() {
       >
         {/* Logo */}
         <div className="flex h-20 items-center gap-3 border-b border-sidebar-border px-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary">
             <ForkKnifeCrossed className="h-5 w-5 text-primary-foreground" />
           </div>
           {!collapsed && (
