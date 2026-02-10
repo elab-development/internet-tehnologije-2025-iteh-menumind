@@ -21,7 +21,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "@/lib/auth-client";
-import { ImagePlus, X } from "lucide-react";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
+import { X } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Category } from "../../categories/_components/types";
 import { createMenuItem, updateMenuItem } from "../menu-item";
@@ -53,13 +55,16 @@ export function MenuItemDialog({
     preparationTime: "15",
     calories: "0",
     dietary: [],
-    imageUrl: "/menu/default-dish.jpg",
+    imageUrl: "",
     popular: false,
     price: "0",
     isAvailable: true,
     createdAt: null,
   };
+
   const [formData, setFormData] = useState<Omit<MenuItem, "id">>(defaultItem);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const isEditing = Boolean(item);
 
@@ -67,13 +72,31 @@ export function MenuItemDialog({
     if (item) {
       const { id, ...rest } = item;
       setFormData(rest);
+      setPreviewUrl(item.imageUrl || null);
     } else {
       setFormData(defaultItem);
+      setPreviewUrl(null);
+      setImageFile(null);
     }
   }, [item, open]);
 
+  useEffect(() => {
+    return () => {
+      if (previewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    let finalImageUrl = formData.imageUrl;
+
+    if (imageFile) {
+      const uploaded = await uploadToCloudinary(imageFile);
+      finalImageUrl = uploaded.secure_url;
+    }
 
     const payload = {
       restaurantId: formData.restaurantId,
@@ -84,7 +107,7 @@ export function MenuItemDialog({
       preparationTime: formData.preparationTime,
       calories: formData.calories,
       dietary: formData.dietary,
-      imageUrl: formData.imageUrl,
+      imageUrl: finalImageUrl,
       popular: formData.popular,
       isAvailable: formData.isAvailable,
       createdAt: formData.createdAt,
@@ -134,9 +157,31 @@ export function MenuItemDialog({
         <form onSubmit={handleSubmit} className="grid gap-6 py-4">
           <div className="flex flex-col gap-2">
             <Label>Image</Label>
-            <div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/50">
-              <ImagePlus className="h-8 w-8 text-muted-foreground" />
-            </div>
+
+            {previewUrl && (
+              <div className="relative h-44 w-full overflow-hidden rounded-lg border">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  width={400}
+                  height={300}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            )}
+
+            <Input
+              className="cursor-pointer"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setImageFile(file);
+                  setPreviewUrl(URL.createObjectURL(file));
+                }
+              }}
+            />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -178,28 +223,30 @@ export function MenuItemDialog({
             <Textarea
               value={formData.description ?? ""}
               onChange={(e) =>
-                setFormData((p) => ({ ...p, description: e.target.value }))
+                setFormData((p) => ({
+                  ...p,
+                  description: e.target.value,
+                }))
               }
             />
           </div>
 
           <div className="grid gap-x-4 sm:grid-cols-3">
             <div className="space-y-2">
-              <Label>Price</Label>
+              <Label>Price ($)</Label>
               <Input
                 type="number"
-                placeholder="Price"
                 value={formData.price}
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, price: e.target.value }))
                 }
               />
             </div>
+
             <div className="space-y-2">
-              <Label>Prep Time</Label>
+              <Label>Prep Time (min)</Label>
               <Input
                 type="number"
-                placeholder="Prep time"
                 value={formData.preparationTime}
                 onChange={(e) =>
                   setFormData((p) => ({
@@ -207,16 +254,19 @@ export function MenuItemDialog({
                     preparationTime: e.target.value,
                   }))
                 }
-              />{" "}
+              />
             </div>
+
             <div className="space-y-2">
               <Label>Calories</Label>
               <Input
                 type="number"
-                placeholder="Calories"
                 value={formData.calories}
                 onChange={(e) =>
-                  setFormData((p) => ({ ...p, calories: e.target.value }))
+                  setFormData((p) => ({
+                    ...p,
+                    calories: e.target.value,
+                  }))
                 }
               />
             </div>

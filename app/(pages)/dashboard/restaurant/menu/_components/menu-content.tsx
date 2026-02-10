@@ -25,6 +25,7 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { DeleteConfirmDialog } from "./delete-confirm-dialog";
 import { MenuItemDialog } from "./menu-item-dialog";
@@ -191,9 +192,20 @@ export function MenuContent() {
             >
               <CardContent className="p-0">
                 <div className="relative aspect-4/3 overflow-hidden rounded-t-lg bg-muted">
-                  <div className="left-1/2 absolute p-3 bg-card rounded-full top-1/2 -translate-1/2">
-                    <CookieIcon className="text-primary" />
-                  </div>
+                  {item.imageUrl && item.imageUrl !== "" ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width={1024}
+                      height={768}
+                      loading="eager"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="left-1/2 absolute p-3 bg-card rounded-full top-1/2 -translate-1/2">
+                      <CookieIcon className="text-muted-foreground" />
+                    </div>
+                  )}
                   {item.popular && (
                     <Badge className="absolute left-2 top-4">Popular</Badge>
                   )}
