@@ -26,23 +26,26 @@ const SUGGESTED = [
   "I have allergies",
 ];
 
-const ChatMessage = memo(({ message }: { message: Message }) => {
-  const isUser = message.role === "user";
-  return (
-    <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
-      <div
-        className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
-          isUser
-            ? "bg-primary text-primary-foreground rounded-br-md"
-            : "bg-muted text-foreground rounded-bl-md",
-        )}
-      >
-        {message.content}
+const ChatMessage = memo(
+  ({ message, color }: { message: Message; color?: string }) => {
+    const isUser = message.role === "user";
+    return (
+      <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
+        <div
+          style={{ backgroundColor: isUser ? color : "#231c16" }}
+          className={cn(
+            "max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
+            isUser
+              ? "text-primary-foreground rounded-br-md"
+              : "text-foreground rounded-bl-md bg-card",
+          )}
+        >
+          {message.content}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 const SuggestedButtons = memo(
   ({
@@ -52,7 +55,7 @@ const SuggestedButtons = memo(
     onClick: (msg: string) => void;
     disabled: boolean;
   }) => (
-    <div className="mx-auto max-w-2xl px-4 py-4 flex gap-2 flex-wrap overflow-hidden">
+    <div className="mx-auto max-w-2xl px-4 py-4 flex gap-2 flex-wrap justify-center overflow-hidden">
       {SUGGESTED.map((s) => (
         <button
           key={s}
@@ -68,6 +71,7 @@ const SuggestedButtons = memo(
 );
 
 type MsgAction = { type: "ADD_MESSAGE"; payload: Message };
+
 function messageReducer(state: Message[], action: MsgAction) {
   switch (action.type) {
     case "ADD_MESSAGE":
@@ -86,6 +90,8 @@ export default function AIChatbot({
 }) {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
+
   const [messages, dispatch] = useReducer(messageReducer, [
     {
       id: "welcome",
@@ -109,6 +115,7 @@ export default function AIChatbot({
       const value = (text ?? input).trim();
       if (!value || isTyping) return;
 
+      setShowSuggestions(false);
       setInput("");
 
       const userMsg: Message = {
@@ -116,6 +123,7 @@ export default function AIChatbot({
         role: "user",
         content: value,
       };
+
       dispatch({ type: "ADD_MESSAGE", payload: userMsg });
       setIsTyping(true);
 
@@ -157,14 +165,13 @@ export default function AIChatbot({
   );
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="flex h-screen flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-card backdrop-blur">
         <div className="mx-auto max-w-2xl px-4 py-4 flex items-center gap-2">
           <div
             className="h-9 w-9 rounded-full flex items-center justify-center"
             style={{ backgroundColor: restaurant.themeColor || "#e48d3d" }}
           >
-            {" "}
             <ForkKnifeCrossed className="h-5 w-5 text-primary-foreground" />
           </div>
 
@@ -182,7 +189,11 @@ export default function AIChatbot({
       <main className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-2xl px-4 py-6 space-y-4">
           {messages.map((m) => (
-            <ChatMessage key={m.id} message={m} />
+            <ChatMessage
+              color={restaurant.themeColor || "#e38d3d"}
+              key={m.id}
+              message={m}
+            />
           ))}
 
           {isTyping && (
@@ -201,16 +212,18 @@ export default function AIChatbot({
         </div>
       </main>
 
-      <SuggestedButtons onClick={sendMessage} disabled={isTyping} />
+      {showSuggestions && (
+        <SuggestedButtons onClick={sendMessage} disabled={isTyping} />
+      )}
 
       <form
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
         }}
-        className="sticky bottom-0 border-t bg-card border-border py-6"
+        className="sticky bottom-0 border-t bg-card px-4 border-border py-6"
       >
-        <div className="mx-auto bg-background max-w-2xl py-2 pr-2 pl-4 flex items-center gap-2 flex-1 border rounded-xl text-sm focus:outline-none border-border focus:ring-2 focus:ring-primary">
+        <div className="mx-auto bg-background max-w-2xl py-2 pr-2 pl-4 flex items-center gap-2 flex-1 border rounded-full text-sm focus:outline-none border-border focus:ring-2 focus:ring-primary">
           <Input
             className="border-0 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent"
             value={input}
@@ -223,7 +236,7 @@ export default function AIChatbot({
             style={{ backgroundColor: restaurant.themeColor || "#e48d3d" }}
             type="submit"
             disabled={isTyping || !input.trim()}
-            className="h-10.5 w-10.5 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-50"
+            className="h-10.5 w-10.5 rounded-full flex items-center justify-center text-primary-foreground disabled:opacity-50"
           >
             <Send className="h-4 w-4" />
           </Button>
