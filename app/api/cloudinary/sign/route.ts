@@ -14,7 +14,10 @@ export async function POST() {
     headers: await headers(),
   });
 
-  if (!session?.user?.restaurantId) {
+  if (
+    !session?.user?.restaurantId ||
+    session.user.role !== "RESTAURANT_ADMIN"
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

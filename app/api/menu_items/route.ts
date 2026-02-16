@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import z from "zod";
+import z, { flattenError } from "zod";
 
 export const menuItemSchema = z.object({
   name: z.string().min(1),
@@ -24,7 +24,10 @@ export async function GET() {
     headers: await headers(),
   });
 
-  if (!session?.user?.restaurantId) {
+  if (
+    !session?.user?.restaurantId ||
+    session.user.role !== "RESTAURANT_ADMIN"
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -41,7 +44,10 @@ export async function POST(req: Request) {
     headers: await headers(),
   });
 
-  if (!session?.user?.restaurantId) {
+  if (
+    !session?.user?.restaurantId ||
+    session.user.role !== "RESTAURANT_ADMIN"
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -50,7 +56,7 @@ export async function POST(req: Request) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: parsed.error.flatten() },
+      { error: flattenError(parsed.error) },
       { status: 400 },
     );
   }

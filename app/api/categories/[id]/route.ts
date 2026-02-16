@@ -17,7 +17,10 @@ export async function PUT(
     headers: await headers(),
   });
 
-  if (!session?.user?.restaurantId) {
+  if (
+    !session?.user?.restaurantId ||
+    session.user.role !== "RESTAURANT_ADMIN"
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -67,7 +70,10 @@ export async function DELETE(
     headers: await headers(),
   });
 
-  if (!session?.user?.restaurantId) {
+  if (
+    !session?.user?.restaurantId ||
+    session.user.role !== "RESTAURANT_ADMIN"
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
