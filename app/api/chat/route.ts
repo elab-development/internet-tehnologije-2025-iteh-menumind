@@ -1,4 +1,4 @@
-import { MenuItem } from "@/db/schema/menu_items";
+import { MenuItem } from "@/(pages)/dashboard/restaurant/menu/_components/types";
 import { buildMenuText } from "@/lib/ai";
 import { google } from "@ai-sdk/google";
 import { convertToModelMessages, streamText, UIMessage } from "ai";

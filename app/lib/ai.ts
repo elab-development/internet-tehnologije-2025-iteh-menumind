@@ -1,10 +1,4 @@
-type MenuTextItem = {
-  name: string;
-  description: string | null;
-  price: string | number;
-  dietary?: string[] | null;
-  category?: { name: string | null } | null;
-};
+import { MenuItem } from "@/(pages)/dashboard/restaurant/menu/_components/types";
 
 export function buildSystemInstruction(restaurantName: string) {
   return `
@@ -18,13 +12,13 @@ Rules:
 `;
 }
 
-export function buildMenuText(items: MenuTextItem[]) {
+export function buildMenuText(items: MenuItem[]) {
   return items
     .map((item) => {
       const dietary = item.dietary?.length ? item.dietary.join(", ") : "-";
       return [
         `Item: ${item.name}`,
-        `Category: ${item.category?.name ?? "-"}`,
+        `Category: ${item.categoryId ?? "-"}`,
         `Description: ${item.description ?? "-"}`,
         `Price: ${item.price} EUR`,
         `Dietary: ${dietary}`,

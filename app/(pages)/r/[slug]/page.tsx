@@ -1,4 +1,5 @@
 import { db } from "@/db/db";
+import { menuItems } from "@/db/schema/menu_items";
 import { restaurants } from "@/db/schema/restaurants";
 import { eq } from "drizzle-orm";
 import AIChatbot from "./_components/ai-chatbot";
@@ -24,7 +25,9 @@ export default async function RestaurantPage({
     .where(eq(restaurants.slug, slug))
     .limit(1);
 
-  if (data.length === 0) {
+  const restaurant = data[0];
+
+  if (!restaurant) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold">Restaurant Not Found</h1>
@@ -32,5 +35,16 @@ export default async function RestaurantPage({
     );
   }
 
-  return <AIChatbot restaurant={data[0]} tableNumber={tableNumber} />;
+  const menuItemsData = await db
+    .select()
+    .from(menuItems)
+    .where(eq(menuItems.restaurantId, restaurant.id ?? -1));
+
+  return (
+    <AIChatbot
+      menuItems={menuItemsData}
+      restaurant={restaurant}
+      tableNumber={tableNumber}
+    />
+  );
 }

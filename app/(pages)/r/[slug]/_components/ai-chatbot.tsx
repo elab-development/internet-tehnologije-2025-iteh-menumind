@@ -1,5 +1,6 @@
 "use client";
 
+import { MenuItem } from "@/(pages)/dashboard/restaurant/menu/_components/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Restaurants } from "@/db/schema/restaurants";
@@ -68,19 +69,25 @@ const SuggestedButtons = memo(
 
 export default function AIChatbot({
   restaurant,
+  menuItems,
   tableNumber,
 }: {
   restaurant: Restaurants;
+  menuItems: MenuItem[];
   tableNumber?: string;
 }) {
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
+      body: {
+        restaurantName: restaurant.name,
+        menuItems: menuItems,
+      },
     }),
   });
   const [input, setInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
+  const isTyping = status === "submitted" || status === "streaming";
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
