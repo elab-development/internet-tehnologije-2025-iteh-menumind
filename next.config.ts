@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
             key: "Access-Control-Allow-Headers",
             value: "Content-Type, Authorization",
           },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
         ],
       },
     ];
