@@ -1,0 +1,1082 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation",
+    "version": "1.0.0",
+    "description": "This is the OpenAPI specification for your project."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "better-auth.session_token"
+      }
+    },
+    "schemas": {
+      "CategoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Category ID"
+          },
+          "restaurantId": {
+            "type": "string",
+            "description": "Restaurant ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Category name"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Category description"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether category is active"
+          },
+          "createdAt": {
+            "type": "object",
+            "nullable": true,
+            "description": "Created timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "restaurantId",
+          "name",
+          "description",
+          "isActive",
+          "createdAt"
+        ]
+      },
+      "categorySchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Category name"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Category description"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether category is active"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "CategoryParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Category ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Operation success flag"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "ChatRequestSchema": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageSchema"
+            },
+            "description": "Conversation history"
+          },
+          "restaurantName": {
+            "type": "string",
+            "description": "Restaurant name"
+          },
+          "menuItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMenuItemSchema"
+            },
+            "description": "Menu context"
+          }
+        },
+        "required": [
+          "messages",
+          "restaurantName",
+          "menuItems"
+        ]
+      },
+      "ChatStreamResponse": {
+        "type": "string",
+        "description": "text/event-stream payload containing assistant message chunks"
+      },
+      "CloudinarySignResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "number",
+            "description": "Unix timestamp used for signing"
+          },
+          "signature": {
+            "type": "string",
+            "description": "Cloudinary API signature"
+          },
+          "cloudName": {
+            "type": "string",
+            "description": "Cloudinary cloud name"
+          },
+          "apiKey": {
+            "type": "string",
+            "description": "Cloudinary API key"
+          },
+          "folder": {
+            "type": "string",
+            "description": "Target upload folder"
+          }
+        },
+        "required": [
+          "timestamp",
+          "signature",
+          "cloudName",
+          "apiKey",
+          "folder"
+        ]
+      },
+      "MenuItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Menu item ID"
+          },
+          "restaurantId": {
+            "type": "string",
+            "description": "Restaurant ID"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Category ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Menu item name"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Menu item description"
+          },
+          "preparationTime": {
+            "type": "string",
+            "description": "Preparation time in minutes"
+          },
+          "calories": {
+            "type": "string",
+            "description": "Calories"
+          },
+          "dietary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dietary tags"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "Image URL"
+          },
+          "popular": {
+            "type": "boolean",
+            "description": "Popular flag"
+          },
+          "price": {
+            "type": "string",
+            "description": "Price"
+          },
+          "isAvailable": {
+            "type": "boolean",
+            "description": "Availability flag"
+          },
+          "createdAt": {
+            "type": "object",
+            "nullable": true,
+            "description": "Created timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "restaurantId",
+          "categoryId",
+          "name",
+          "description",
+          "preparationTime",
+          "calories",
+          "dietary",
+          "imageUrl",
+          "popular",
+          "price",
+          "isAvailable",
+          "createdAt"
+        ]
+      },
+      "menuItemSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Menu item name"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Menu item description"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Category ID"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Price"
+          },
+          "preparationTime": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Preparation time in minutes"
+          },
+          "calories": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Calories"
+          },
+          "dietary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dietary tags"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "Image URL"
+          },
+          "popular": {
+            "type": "boolean",
+            "description": "Popular flag"
+          },
+          "isAvailable": {
+            "type": "boolean",
+            "description": "Availability flag"
+          }
+        },
+        "required": [
+          "name",
+          "categoryId",
+          "price"
+        ]
+      },
+      "MenuItemPathParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Menu item ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "MenuItemDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Operation success flag"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "RestaurantPathParams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Restaurant ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "restaurantUpdateSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Restaurant name"
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Restaurant slug"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Restaurant description"
+          },
+          "themeColor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Primary theme color"
+          }
+        }
+      },
+      "RestaurantResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Restaurant ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Restaurant name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Restaurant slug"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Restaurant description"
+          },
+          "themeColor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Primary theme color"
+          },
+          "createdAt": {
+            "type": "object",
+            "nullable": true,
+            "description": "Created timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "description",
+          "themeColor",
+          "createdAt"
+        ]
+      },
+      "ChatMessagePartSchema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Message part type (for example: text)"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text content"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ChatMessageSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Message ID"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool"
+            ],
+            "description": "Message role"
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessagePartSchema"
+            },
+            "description": "Structured message parts"
+          },
+          "content": {
+            "type": "string",
+            "description": "Legacy plain text content"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "ChatMenuItemSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Menu item name"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Category ID"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Menu item description"
+          },
+          "price": {
+            "type": "string",
+            "description": "Price"
+          },
+          "dietary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Dietary tags"
+          }
+        },
+        "required": [
+          "name",
+          "categoryId",
+          "description",
+          "price",
+          "dietary"
+        ]
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Invalid request parameters"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "400"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Authentication required"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "401"
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Access denied"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "403"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Resource not found"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "404"
+                }
+              }
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Resource already exists"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "409"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "An unexpected error occurred"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/categories": {
+      "get": {
+        "operationId": "getRestaurantCategories",
+        "summary": "Get all categories for logged-in restaurant\r",
+        "description": "Returns all categories belonging to the authenticated restaurant admin",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCategory",
+        "summary": "Create new category\r",
+        "description": "Creates a new category for the authenticated restaurant",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/categorySchema"
+              }
+            }
+          },
+          "description": "Category creation payload"
+        },
+        "responses": {
+          "200": {
+            "description": "Created category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "put": {
+        "operationId": "updateCategory",
+        "summary": "Update category\r",
+        "description": "Updates an existing category belonging to authenticated restaurant",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "description": "Category ID"
+            },
+            "required": true,
+            "description": "Category ID",
+            "example": "123"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/categorySchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteCategory",
+        "summary": "Delete category\r",
+        "description": "Deletes a category belonging to authenticated restaurant",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "description": "Category ID"
+            },
+            "required": true,
+            "description": "Category ID",
+            "example": "123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "operationId": "streamChatResponse",
+        "summary": "Stream AI chat response",
+        "description": "Generates a streamed AI response using restaurant menu context",
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequestSchema"
+              }
+            }
+          },
+          "description": "Chat payload including messages and menu context"
+        },
+        "responses": {
+          "200": {
+            "description": "text/event-stream response with assistant chunks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatStreamResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/cloudinary/sign": {
+      "post": {
+        "operationId": "signCloudinaryUpload",
+        "summary": "Sign Cloudinary upload request",
+        "description": "Returns a short-lived Cloudinary signature for authenticated restaurant admins",
+        "tags": [
+          "Cloudinary"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Signed upload parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudinarySignResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/menu_items": {
+      "get": {
+        "operationId": "getMenuItems",
+        "summary": "Get all menu items",
+        "description": "Returns all menu items belonging to the authenticated restaurant admin",
+        "tags": [
+          "Menu Items"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of menu items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MenuItemResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createMenuItem",
+        "summary": "Create menu item",
+        "description": "Creates a new menu item for the authenticated restaurant",
+        "tags": [
+          "Menu Items"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/menuItemSchema"
+              }
+            }
+          },
+          "description": "Menu item payload"
+        },
+        "responses": {
+          "200": {
+            "description": "Created menu item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/menu_items/{id}": {
+      "put": {
+        "operationId": "updateMenuItem",
+        "summary": "Update menu item",
+        "description": "Updates an existing menu item for the authenticated restaurant admin",
+        "tags": [
+          "Menu Items"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "description": "Menu item ID"
+            },
+            "required": true,
+            "description": "Menu item ID",
+            "example": "123"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/menuItemSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated menu item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteMenuItem",
+        "summary": "Delete menu item",
+        "description": "Deletes a menu item for the authenticated restaurant admin",
+        "tags": [
+          "Menu Items"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "description": "Menu item ID"
+            },
+            "required": true,
+            "description": "Menu item ID",
+            "example": "123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu item deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/restaurants/{id}": {
+      "put": {
+        "operationId": "updateRestaurant",
+        "summary": "Update restaurant",
+        "description": "Updates restaurant settings for the authenticated restaurant admin",
+        "tags": [
+          "Restaurants"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "description": "Restaurant ID"
+            },
+            "required": true,
+            "description": "Restaurant ID",
+            "example": "123"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/restaurantUpdateSchema"
+              }
+            }
+          },
+          "description": "Restaurant settings payload"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated restaurant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestaurantResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    }
+  }
+}
