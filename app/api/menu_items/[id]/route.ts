@@ -4,9 +4,31 @@ import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { flattenError } from "zod";
+import { flattenError, z } from "zod";
 import { menuItemSchema } from "../route";
 
+export const MenuItemPathParams = z.object({
+  id: z.string().describe("Menu item ID"),
+});
+
+export const MenuItemDeleteResponse = z.object({
+  success: z.boolean().describe("Operation success flag"),
+});
+
+/**
+ * Update menu item
+ * @description Updates an existing menu item for the authenticated restaurant admin
+ * @operationId updateMenuItem
+ * @pathParams MenuItemPathParams
+ * @body menuItemSchema
+ * @response 200:MenuItemResponse
+ * @responseDescription Updated menu item
+ * @responseSet none
+ * @add 400,401,500
+ * @auth apiKey
+ * @tag Menu Items
+ * @openapi
+ */
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -54,6 +76,19 @@ export async function PUT(
   return NextResponse.json(updated);
 }
 
+/**
+ * Delete menu item
+ * @description Deletes a menu item for the authenticated restaurant admin
+ * @operationId deleteMenuItem
+ * @pathParams MenuItemPathParams
+ * @response 200:MenuItemDeleteResponse
+ * @responseDescription Menu item deleted successfully
+ * @responseSet none
+ * @add 401,500
+ * @auth apiKey
+ * @tag Menu Items
+ * @openapi
+ */
 export async function DELETE(
   _: Request,
   { params }: { params: Promise<{ id: string }> },

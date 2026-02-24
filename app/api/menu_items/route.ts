@@ -7,18 +7,50 @@ import { NextResponse } from "next/server";
 import z, { flattenError } from "zod";
 
 export const menuItemSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  categoryId: z.string(),
-  price: z.coerce.number().min(0),
-  preparationTime: z.coerce.number().min(0).optional(),
-  calories: z.coerce.number().min(0).optional(),
-  dietary: z.array(z.string()).optional(),
-  imageUrl: z.string().optional(),
-  popular: z.boolean().optional(),
-  isAvailable: z.boolean().optional(),
+  name: z.string().min(1).describe("Menu item name"),
+  description: z.string().min(1).optional().describe("Menu item description"),
+  categoryId: z.string().describe("Category ID"),
+  price: z.coerce.number().min(0).describe("Price"),
+  preparationTime: z.coerce
+    .number()
+    .min(0)
+    .optional()
+    .describe("Preparation time in minutes"),
+  calories: z.coerce.number().min(0).optional().describe("Calories"),
+  dietary: z.array(z.string()).optional().describe("Dietary tags"),
+  imageUrl: z.string().optional().describe("Image URL"),
+  popular: z.boolean().optional().describe("Popular flag"),
+  isAvailable: z.boolean().optional().describe("Availability flag"),
 });
 
+export const MenuItemResponse = z.object({
+  id: z.string().describe("Menu item ID"),
+  restaurantId: z.string().describe("Restaurant ID"),
+  categoryId: z.string().describe("Category ID"),
+  name: z.string().describe("Menu item name"),
+  description: z.string().nullable().describe("Menu item description"),
+  preparationTime: z.string().describe("Preparation time in minutes"),
+  calories: z.string().describe("Calories"),
+  dietary: z.array(z.string()).describe("Dietary tags"),
+  imageUrl: z.string().nullable().describe("Image URL"),
+  popular: z.boolean().describe("Popular flag"),
+  price: z.string().describe("Price"),
+  isAvailable: z.boolean().describe("Availability flag"),
+  createdAt: z.iso.datetime().nullable().describe("Created timestamp"),
+});
+
+/**
+ * Get all menu items
+ * @description Returns all menu items belonging to the authenticated restaurant admin
+ * @operationId getMenuItems
+ * @response 200:MenuItemResponse[]
+ * @responseDescription List of menu items
+ * @responseSet none
+ * @add 401,500
+ * @auth apiKey
+ * @tag Menu Items
+ * @openapi
+ */
 export async function GET() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -39,6 +71,20 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
+/**
+ * Create menu item
+ * @description Creates a new menu item for the authenticated restaurant
+ * @operationId createMenuItem
+ * @body menuItemSchema
+ * @bodyDescription Menu item payload
+ * @response 200:MenuItemResponse
+ * @responseDescription Created menu item
+ * @responseSet none
+ * @add 400,401,500
+ * @auth apiKey
+ * @tag Menu Items
+ * @openapi
+ */
 export async function POST(req: Request) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -76,7 +122,6 @@ export async function POST(req: Request) {
       popular: parsed.data.popular ?? false,
       isAvailable: parsed.data.isAvailable ?? true,
     })
-
     .returning();
 
   return NextResponse.json(created);
