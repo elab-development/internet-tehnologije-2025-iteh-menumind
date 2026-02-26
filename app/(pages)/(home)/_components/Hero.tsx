@@ -67,6 +67,7 @@ const Hero = () => {
                 width={1920}
                 height={1080}
                 alt="Digital menu tablet in elegant restaurant setting"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-linear-to-t from-background/40 via-transparent to-transparent" />
             </div>

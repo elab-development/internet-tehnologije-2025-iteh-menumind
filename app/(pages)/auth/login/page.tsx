@@ -65,7 +65,7 @@ export default function LogIn() {
   }
 
   return (
-    <section className="w-full h-screen flex justify-center items-center">
+    <section className="w-full h-screen flex container justify-center items-center">
       <Link
         href="/"
         className="absolute flex text-white items-center gap-1 top-8 left-8 text-sm underline"
