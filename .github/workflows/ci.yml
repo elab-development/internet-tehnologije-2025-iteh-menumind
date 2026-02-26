@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -51,3 +51,60 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: menumind-ai:${{ github.sha }}
+
+  deploy-vercel:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - test-and-build
+      - docker-image
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://menumind-ai.vercel.app
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Vercel secrets
+        run: |
+          missing=0
+          if [ -z "${VERCEL_TOKEN}" ]; then
+            echo "::error::Missing repository secret: VERCEL_TOKEN"
+            missing=1
+          fi
+          if [ -z "${VERCEL_ORG_ID}" ]; then
+            echo "::error::Missing repository secret: VERCEL_ORG_ID"
+            missing=1
+          fi
+          if [ -z "${VERCEL_PROJECT_ID}" ]; then
+            echo "::error::Missing repository secret: VERCEL_PROJECT_ID"
+            missing=1
+          fi
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Pull Vercel project settings
+        run: npx vercel@latest pull --yes --environment=production --token="${VERCEL_TOKEN}"
+
+      - name: Build with Vercel
+        run: npx vercel@latest build --prod --token="${VERCEL_TOKEN}"
+
+      - name: Deploy to Vercel (Production)
+        id: deploy
+        run: |
+          DEPLOYMENT_URL=$(npx vercel@latest deploy --prebuilt --prod --token="${VERCEL_TOKEN}")
+          echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Deployment URL
+        run: echo "Production deployed to ${{ steps.deploy.outputs.deployment_url }}"
